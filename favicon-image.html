@@ -1,24 +1,48 @@
-<polymer-element name="favicon-image">
+<polymer-element
+  name="favicon-image"
+  attributes="icon suffix sizes msTileColor"
+>
 
 <template>
-  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
-  <link rel="icon" type="image/png" sizes="196x196" href="/favicon-196x196.png">
-  <link rel="icon" type="image/png" sizes="160x160" href="/favicon-160x160.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+
+  <template bind if="{{msTileColor}}">
+    <meta name="msapplication-TileColor" content="{{msTileColor}}">
+  </template>
+
+  <template repeat="{{size in sizes}}">
+
+    <template repeat="{{appleTouchIconSize in appleTouchIconSizes}}">
+      <template if="{{size == appleTouchIconSize}}">
+        <link rel="apple-touch-icon" sizes="{{size}}x{{size}}" href="{{icon}}-{{size}}x{{size}}.{{suffix}}">
+      </template>
+    </template>
+
+    <template repeat="{{iconSize in iconSizes}}">
+      <template if="{{size == iconSize}}">
+        <link rel="icon" type="image/{{suffix}}" sizes="{{size}}x{{size}}" href="{{icon}}-{{size}}x{{size}}.{{suffix}}">
+      </template>
+    </template>
+
+    <template repeat="{{msTileSize in msTileSizes}}">
+      <template if="{{size == msTileSize}}">
+        <link rel="icon" type="image/{{suffix}}" sizes="{{size}}x{{size}}" href="{{icon}}-{{size}}x{{size}}.{{suffix}}">
+      </template>
+    </template>
+
+  </template> 
+
 </template>
 
 <script>
-  Polymer('favicon-image', {});
+  Polymer('favicon-image', {
+    appleTouchIconSizes: [57, 114, 72, 144, 60, 120, 76, 152],
+    iconSizes: [196, 160, 96, 16, 32],
+    msTileColor: '#ffffff',
+    msTileSizes: [144],
+    suffix: 'png',
+    ready: function(){
+      this.sizes = eval(this.sizes) || [];
+    }
+  });
 </script>
 </polymer-element>
