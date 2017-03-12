@@ -3,37 +3,6 @@
   <body>
 
     <dom-module id="favicon-image">
-
-      <template id="meta">
-        
-        <template if="{{msTileColor}}">
-          <meta name="msapplication-TileColor" content="{{msTileColor}}">
-        </template>
-
-        <template is="dom-repeat" items="{{sizes}}" as="size">
-
-          <template is="dom-repeat" items="{{appleTouchIconSizes}}" as="appleTouchIconSize">
-            <template if="{{size == appleTouchIconSize}}">
-              <link rel="apple-touch-icon" sizes="{{size}}x{{size}}" href="{{icon}}-{{size}}x{{size}}.{{suffix}}">
-            </template>
-          </template>
-
-          <template is="dom-repeat" items="{{iconSizes}}" as="iconSize">
-            <template if="{{size == iconSize}}">
-              <link rel="icon" type="image/{{suffix}}" sizes="{{size}}x{{size}}" href="{{icon}}-{{size}}x{{size}}.{{suffix}}">
-            </template>
-          </template>
-
-          <template is="dom-repeat" items="{{msTileSizes}}" as="msTileSize">
-            <template if="{{size == msTileSize}}">
-              <link rel="icon" type="image/{{suffix}}" sizes="{{size}}x{{size}}" href="{{icon}}-{{size}}x{{size}}.{{suffix}}">
-            </template>
-          </template>
-
-        </template>
-
-      </template>
-
       <script>
 
         Polymer({
@@ -44,7 +13,7 @@
 
             appleTouchIconSizes: {
               type: Array,
-              value: [57, 114, 72, 144, 60, 120, 76, 152]
+              value: [57, 60, 72, 76, 114, 120, 144, 152]
             },
 
             iconSizes: {
@@ -64,13 +33,104 @@
 
             suffix: {
               type: String,
-              value: 'png'
+              value: '.png'
             },
 
             prefix: {
               type: String,
+              value: 'favicon-',
+              notify: true
+            },
+
+            path: {
+              type: String,
               value: '/'
             }
+
+          },
+
+          attached: function() {
+            this.updateSizes();
+            this._createIco();
+          },
+
+          _findOrCreateHeadElement: function(attributes) {
+            
+            var el = this._findHeadElement(attributes);
+
+            if(!el) {
+              el = document.createElement('link');
+              Object.keys(attributes)
+                .forEach((attributeKey) => {
+                  el.setAttribute(attributeKey, attributes[attributeKey]);
+                });
+              document.head.appendChild(el);
+            }
+
+            return el;
+
+          },
+
+          _findHeadElement: function(attributes) {
+
+            var selector = 'head > link' + Object.keys(attributes)
+              .map((attributeKey) => '[' + attributeKey + '="' + attributes[attributeKey] + '"]')
+              .join('');
+
+            return document.head.querySelector(selector);
+
+          },
+
+          _getFileUrl: function(size) {
+
+            return this.path + this.prefix + [size, size].join('x') + this.suffix;
+
+          },
+
+          _createAppleTouchIcon: function(size) {
+
+            var el = this._findOrCreateHeadElement({
+              rel: 'apple-touch-icon',
+              sizes: [size, size].join('x')
+            });
+            el.setAttribute('href', this._getFileUrl(size));
+
+          },
+
+          _createIcon: function() {
+
+            var el = this._findOrCreateHeadElement({
+              rel: 'icon'
+            });
+            el.setAttribute('href', this._getFileUrl(size));
+
+          },
+
+          _createIco: function(size) {
+
+            var el = this._findOrCreateHeadElement({
+              rel: 'icon',
+              sizes: [size, size].join('x'),
+              type: 'image/x-icon'
+            });
+            el.setAttribute('href', this.path + 'favicon.ico');
+            el.setAttribute('type', 'image/x-icon');
+
+          },
+
+          updateSizes: function() {
+
+            var sizes = []
+              .concat(this.appleTouchIconSizes)
+              .concat(this.iconSizes);
+
+            var el;
+
+            sizes
+              .filter((size) => (this.appleTouchIconSizes.indexOf(size) !== -1))
+              .forEach((size) => this._createAppleTouchIcon(size));
+
+            this.set('sizes', sizes);
 
           }
 
