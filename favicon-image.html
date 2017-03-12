@@ -97,20 +97,20 @@
 
           },
 
-          _createIcon: function() {
+          _createIcon: function(size) {
 
             var el = this._findOrCreateHeadElement({
-              rel: 'icon'
+              rel: 'icon',
+              sizes: [size, size].join('x')
             });
             el.setAttribute('href', this._getFileUrl(size));
 
           },
 
-          _createIco: function(size) {
+          _createIco: function() {
 
             var el = this._findOrCreateHeadElement({
               rel: 'icon',
-              sizes: [size, size].join('x'),
               type: 'image/x-icon'
             });
             el.setAttribute('href', this.path + 'favicon.ico');
@@ -130,6 +130,9 @@
               .filter((size) => (this.appleTouchIconSizes.indexOf(size) !== -1))
               .forEach((size) => this._createAppleTouchIcon(size));
 
+            sizes
+              .forEach((size) => this._createIcon(size));
+
             this.set('sizes', sizes);
 
           }
@@ -140,3 +143,4 @@
     </dom-module>
   </body>
 </html>
+
