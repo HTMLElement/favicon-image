@@ -1,0 +1,29 @@
+{
+  "name": "favicon-image",
+  "description": "Favicon web component that works across devices and resolutions",
+  "version": "0.1.0",
+  "dependencies": {
+    "polymer": "1.7.0"
+  },
+  "devDependencies": {
+    "test-fixture": "polymerelements/test-fixture#^1.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#~0.7.2",
+    "paper-styles": "PolymerElements/paper-styles",
+    "prism-element": "PolymerElements/prism-element",
+    "hydrolysis": "Polymer/hydrolysis",
+    "web-component-tester": "~3.2.0",
+    "marked-element": "PolymerElements/marked-element"
+  },
+  "homepage": "https://github.com/HTMLElement/favicon-image/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HTMLElement/favicon-image.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "web-components",
+    "polymer",
+    "favicon",
+    "head"
+  ]
+}
