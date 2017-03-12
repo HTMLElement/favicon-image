@@ -3,7 +3,7 @@
   "description": "Favicon web component that works across devices and resolutions",
   "version": "0.1.0",
   "dependencies": {
-    "polymer": "1.7.0"
+    "polymer": "^1.0.0"
   },
   "devDependencies": {
     "test-fixture": "polymerelements/test-fixture#^1.0.0",
