@@ -1,48 +1,82 @@
-<polymer-element
-  name="favicon-image"
-  attributes="icon suffix sizes msTileColor"
->
+<!DOCTYPE html>
+<html>
+  <body>
 
-<template>
+    <dom-module id="favicon-image">
 
-  <template bind if="{{msTileColor}}">
-    <meta name="msapplication-TileColor" content="{{msTileColor}}">
-  </template>
+      <template id="meta">
+        
+        <template if="{{msTileColor}}">
+          <meta name="msapplication-TileColor" content="{{msTileColor}}">
+        </template>
 
-  <template repeat="{{size in sizes}}">
+        <template is="dom-repeat" items="{{sizes}}" as="size">
 
-    <template repeat="{{appleTouchIconSize in appleTouchIconSizes}}">
-      <template if="{{size == appleTouchIconSize}}">
-        <link rel="apple-touch-icon" sizes="{{size}}x{{size}}" href="{{icon}}-{{size}}x{{size}}.{{suffix}}">
+          <template is="dom-repeat" items="{{appleTouchIconSizes}}" as="appleTouchIconSize">
+            <template if="{{size == appleTouchIconSize}}">
+              <link rel="apple-touch-icon" sizes="{{size}}x{{size}}" href="{{icon}}-{{size}}x{{size}}.{{suffix}}">
+            </template>
+          </template>
+
+          <template is="dom-repeat" items="{{iconSizes}}" as="iconSize">
+            <template if="{{size == iconSize}}">
+              <link rel="icon" type="image/{{suffix}}" sizes="{{size}}x{{size}}" href="{{icon}}-{{size}}x{{size}}.{{suffix}}">
+            </template>
+          </template>
+
+          <template is="dom-repeat" items="{{msTileSizes}}" as="msTileSize">
+            <template if="{{size == msTileSize}}">
+              <link rel="icon" type="image/{{suffix}}" sizes="{{size}}x{{size}}" href="{{icon}}-{{size}}x{{size}}.{{suffix}}">
+            </template>
+          </template>
+
+        </template>
+
       </template>
-    </template>
 
-    <template repeat="{{iconSize in iconSizes}}">
-      <template if="{{size == iconSize}}">
-        <link rel="icon" type="image/{{suffix}}" sizes="{{size}}x{{size}}" href="{{icon}}-{{size}}x{{size}}.{{suffix}}">
-      </template>
-    </template>
+      <script>
 
-    <template repeat="{{msTileSize in msTileSizes}}">
-      <template if="{{size == msTileSize}}">
-        <link rel="icon" type="image/{{suffix}}" sizes="{{size}}x{{size}}" href="{{icon}}-{{size}}x{{size}}.{{suffix}}">
-      </template>
-    </template>
+        Polymer({
 
-  </template> 
+          is: 'favicon-image',
 
-</template>
+          properties: {
 
-<script>
-  Polymer('favicon-image', {
-    appleTouchIconSizes: [57, 114, 72, 144, 60, 120, 76, 152],
-    iconSizes: [196, 160, 96, 16, 32],
-    msTileColor: '#ffffff',
-    msTileSizes: [144],
-    suffix: 'png',
-    ready: function(){
-      this.sizes = eval(this.sizes) || [];
-    }
-  });
-</script>
-</polymer-element>
+            appleTouchIconSizes: {
+              type: Array,
+              value: [57, 114, 72, 144, 60, 120, 76, 152]
+            },
+
+            iconSizes: {
+              type: Array,
+              value: [196, 160, 96, 16, 32]
+            },
+
+            msTileColor: {
+              type: String,
+              value: '#ffffff'
+            },
+
+            msTileSizes: {
+              type: Array,
+              value: [144]
+            },
+
+            suffix: {
+              type: String,
+              value: 'png'
+            },
+
+            prefix: {
+              type: String,
+              value: '/'
+            }
+
+          }
+
+        });
+
+      </script>
+    </dom-module>
+  </body>
+</html>
